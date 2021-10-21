@@ -1,12 +1,12 @@
 <template>
     <div style="margin-left:30%; margin-right:30%; margin-top:5%; margin-bottom:5%">
-        <h2>Enter your players' names</h2>
+        <h2>Enter your players' names in ascending power level</h2>
         <p>(separated by commas no spaces)</p>
         <b-input v-model="players_str"></b-input>
         <br>
         <b-button variant='primary' @click="update_players">Update Players List</b-button>
-        <b-button @click="update_players">Report Scores</b-button>
-        <b-button variant='success' @click="update_players">Randomize</b-button>
+        <b-button @click="report_scores">Report Scores</b-button>
+        <b-button variant='success' @click="generate_matchups">Generate Matchups!</b-button>
         <br>
         <br>
         <div>
@@ -154,6 +154,49 @@ export default {
             this.players[itemID].placement.side = side
             console.log(court)
             console.log(this.players)
+        },
+        generate_matchups() {
+            var num_players = this.players.length
+            var num_off_court = this.off_court.length
+            if (num_players >= 16){
+                var num_doubles_matches = 4
+                for (let i=0; i<4; i++) {
+                    for (let j=0; j<2; j++) {
+                        player1_id = this.off_court[Math.floor(Math.random() * ((num_off_court/2).parseInt() + 1))].id
+                        player2_id = this.off_court[Math.floor(Math.random() * ((num_off_court-1) - (num_off_court/2).parseInt() + 1) + (num_off_court/2).parseInt())].id
+                        player1 = players.find(player => player.id === player1_id)
+                        player1.placement.court = i+1
+                        player1.placement.side = j+1
+                        player2 = players.find(player => player.id === player2_id)
+                        player2.placement.court = i+1
+                        player2.placement.side = j+1
+                    }
+                }
+            } else {
+                var num_doubles = Math.floor(16-num_off_court)/4
+                for (let i=0; i<num_doubles; i++) {
+                    for (let j=0; j<2; j++) {
+                        var player1_id = this.off_court[Math.floor(Math.random() * ((num_off_court/2).parseInt() + 1))].id
+                        var player2_id = this.off_court[Math.floor(Math.random() * ((num_off_court-1) - (num_off_court/2).parseInt() + 1) + (num_off_court/2).parseInt())].id
+                        var player1 = players.find(player => player.id === player1_id)
+                        player1.placement.court = i+1
+                        player1.placement.side = j+1
+                        var player2 = players.find(player => player.id === player2_id)
+                        player2.placement.court = i+1
+                        player2.placement.side = j+1
+                    }
+                }
+                if (this.off_court.length == 2) {
+                    var player1_id = this.off_court[0].id
+                    var player2_id = this.off_court[1].id
+                    var player1 = players.find(player => player.id === player1_id)
+                    player1.placement.court = num_doubles + 1
+                    player1.placement.side = 1
+                    var player2 = players.find(player => player.id === player2_id)
+                    player2.placement.court = num_doubles+1
+                    player2.placement.side = 2
+                }
+            }
         }
     }
 }
