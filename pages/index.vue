@@ -8,6 +8,7 @@
         <b-button @click="report_scores">Report Scores</b-button>
         <b-button variant='success' @click="generate_matchups">Generate Matchups!</b-button>
         <br>
+        {{off_court}}
         <br>
         <div>
             <h3>Off-Court</h3>
@@ -157,7 +158,6 @@ export default {
         },
         generate_matchups() {
             var num_players = this.players.length
-            var num_off_court = this.off_court.length
             if (num_players >= 16){
                 var num_doubles_matches = 4
                 for (let i=0; i<4; i++) {
@@ -167,36 +167,43 @@ export default {
                         player1 = players.find(player => player.id === player1_id)
                         player1.placement.court = i+1
                         player1.placement.side = j+1
-                        player2 = players.find(player => player.id === player2_id)
+                        player2 = this.players.find(player => player.id === player2_id)
                         player2.placement.court = i+1
                         player2.placement.side = j+1
                     }
                 }
             } else {
-                var num_doubles = Math.floor(16-num_off_court)/4
+                var num_doubles = Math.floor(16-this.off_court.length/4)
                 for (let i=0; i<num_doubles; i++) {
                     for (let j=0; j<2; j++) {
-                        var player1_id = this.off_court[Math.floor(Math.random() * ((num_off_court/2).parseInt() + 1))].id
-                        var player2_id = this.off_court[Math.floor(Math.random() * ((num_off_court-1) - (num_off_court/2).parseInt() + 1) + (num_off_court/2).parseInt())].id
-                        var player1 = players.find(player => player.id === player1_id)
+                        console.log("id1", this.off_court[Math.floor(Math.random() * (parseInt(this.off_court.length/2) + 1))])
+                        var player1_id = this.off_court[Math.floor(Math.random() * (parseInt(this.off_court.length/2) + 1))].id
+                        console.log("id2", this.off_court[Math.floor(Math.random() * ((this.off_court.length-1) - parseInt(this.off_court.length/2) + 1) + parseInt(this.off_court.length/2))])
+                        var player2_id = this.off_court[Math.floor(Math.random() * ((this.off_court.length) - parseInt(this.off_court.length/2) + 1) + parseInt(this.off_court.length/2))].id
+                        var player1 = this.players.find(player => player.id === player1_id)
                         player1.placement.court = i+1
                         player1.placement.side = j+1
-                        var player2 = players.find(player => player.id === player2_id)
+                        var player2 = this.players.find(player => player.id === player2_id)
                         player2.placement.court = i+1
                         player2.placement.side = j+1
+                        console.log("players", player1, player2)
                     }
                 }
-                if (this.off_court.length == 2) {
+                if (this.off_court.length == 2 || this.off_court.length == 3) {
+                    console.log("singles court starting")
                     var player1_id = this.off_court[0].id
                     var player2_id = this.off_court[1].id
-                    var player1 = players.find(player => player.id === player1_id)
+                    var player1 = this.players.find(player => player.id === player1_id)
                     player1.placement.court = num_doubles + 1
                     player1.placement.side = 1
-                    var player2 = players.find(player => player.id === player2_id)
+                    var player2 = this.players.find(player => player.id === player2_id)
                     player2.placement.court = num_doubles+1
                     player2.placement.side = 2
                 }
             }
+        },
+        report_scores() {
+            console.log("reporting scores")
         }
     }
 }

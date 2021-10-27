@@ -1,0 +1,14 @@
+{
+  "AddPlayers": {
+    "description": "Auto imported from components/AddPlayers.vue"
+  },
+  "Court": {
+    "description": "Auto imported from components/Court.vue"
+  },
+  "NuxtLogo": {
+    "description": "Auto imported from components/NuxtLogo.vue"
+  },
+  "Tutorial": {
+    "description": "Auto imported from components/Tutorial.vue"
+  }
+}

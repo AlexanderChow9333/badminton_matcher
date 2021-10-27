@@ -1,0 +1,16 @@
+[
+  {
+    "name": "doubles",
+    "path": "/doubles",
+    "component": "/Users/alexander.chow/Documents/GitHub/badminton_matcher/pages/doubles.vue",
+    "chunkName": "pages/doubles",
+    "_name": "_60a8d35e"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/Users/alexander.chow/Documents/GitHub/badminton_matcher/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_b42d3324"
+  }
+]
