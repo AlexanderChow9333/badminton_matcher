@@ -162,9 +162,9 @@ export default {
                 var num_doubles_matches = 4
                 for (let i=0; i<4; i++) {
                     for (let j=0; j<2; j++) {
-                        player1_id = this.off_court[Math.floor(Math.random() * ((num_off_court/2).parseInt() + 1))].id
-                        player2_id = this.off_court[Math.floor(Math.random() * ((num_off_court-1) - (num_off_court/2).parseInt() + 1) + (num_off_court/2).parseInt())].id
-                        player1 = players.find(player => player.id === player1_id)
+                        player1_id = this.off_court[parseInt(Math.floor(Math.random() * ((this.off_court.length/2)) + 1))].id
+                        player2_id = this.off_court[parseInt(Math.floor(Math.random() * ((this.off_court.length-1) - (this.off_court.length/2)) + 1) + (parseInt(this.off_court.length/2)))].id
+                        player1 = this.players.find(player => player.id === player1_id)
                         player1.placement.court = i+1
                         player1.placement.side = j+1
                         player2 = this.players.find(player => player.id === player2_id)
