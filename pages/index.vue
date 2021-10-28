@@ -1,15 +1,34 @@
 <template>
-    <div style="margin-left:30%; margin-right:30%; margin-top:5%; margin-bottom:5%">
-        <h2>Enter your players' names in ascending power level</h2>
-        <p>(separated by commas no spaces)</p>
-        <b-input v-model="players_str"></b-input>
-        <br>
-        <b-button variant='primary' @click="update_players">Update Players List</b-button>
-        <b-button @click="report_scores">Report Scores</b-button>
-        <b-button variant='success' @click="generate_matchups">Generate Matchups!</b-button>
-        <br>
-        <br>
-        <div>
+    <b-row style="margin-left:20%; margin-right:20%; margin-top:5%; margin-bottom:2%">
+        <b-col cols="8">
+            <h2>Enter your players' names in ascending power level</h2>
+            <p>(separated by commas no spaces)</p>
+            <b-input v-model="players_str"></b-input>
+            <br>
+            <b-button style="margin:10px;" variant='primary' @click="update_players">Update Players List</b-button>
+            <b-button style="margin:10px;" v-b-modal.scores_modal>Report Scores</b-button>
+                <b-modal id="scores_modal" title="Report the scores!">
+                    <div v-if="court_1_side_1.length > 0">
+                        <h4>Court 1</h4>
+                        <b-input v-model="score_inputs.court1"></b-input>
+                    </div>
+                    <div v-if="court_2_side_1.length > 0">
+                        <h4>Court 2</h4>
+                        <b-input v-model="score_inputs.court2"></b-input>
+                    </div>
+                    <div v-if="court_3_side_1.length > 0">
+                        <h4>Court 3</h4>
+                        <b-input v-model="score_inputs.court3"></b-input>
+                    </div>
+                    <div v-if="court_4_side_1.length > 0">
+                        <h4>Court 4</h4>
+                        <b-input v-model="score_inputs.court4"></b-input>
+                    </div>
+                    <b-button style="margin:10px;" variant='primary' @click="report_scores">Submit</b-button>
+                </b-modal>
+            <b-button style="margin:10px;" variant='success' @click="generate_matchups">Generate Matchups!</b-button>
+            <br>
+            <br>
             <h3>Off-Court</h3>
             <div class='drop-zone' @drop='onDrop($event, 0)' @dragover.prevent @dragenter.prevent>
                 <div v-for='item in off_court' :key='item.title' class='drag-el' draggable @dragstart='startDrag($event, item)'>
@@ -84,8 +103,17 @@
                     </div>
                 </b-col>
             </b-row>
-        </div>
-    </div>
+        </b-col>
+        <b-col cols="1"></b-col>
+        <b-col style="background-color: #b5edb2;" cols="3">
+            <h2 style="text-align: center; margin-top:10px;">Results</h2>
+            <div v-for='(score, index) in scores' :key='index'>
+                <p style="text-align: center">{{ score.side1 + " VS " + score.side2 + ": " + score.result }}</p>
+                <hr>
+            </div>
+            <!-- {{scores}} -->
+        </b-col>
+    </b-row>
 </template>
 
 <script>
@@ -94,7 +122,14 @@ export default {
     data() {
         return {
             players_str: "",
-            players: []
+            players: [],
+            score_inputs: {
+                court1: "",
+                court2: "",
+                court3: "",
+                court4: ""
+            },
+            scores: []
         }
     },
     computed: {
@@ -182,7 +217,6 @@ export default {
                         var player1_id = temp_off_court[Math.floor(Math.random() * (parseInt(temp_off_court.length/2)))].id
                         console.log("id1", player1_id)
                         var player2_id = temp_off_court[Math.floor(Math.random() * ((temp_off_court.length) - parseInt(temp_off_court.length/2)) + parseInt(temp_off_court.length/2))].id
-                        // Math.floor(Math.random() * (max - min + 1) + min)
                         console.log("id2", player2_id)
                         var player1 = this.players.find(player => player.id === player1_id)
                         player1.placement.court = i+1
@@ -214,14 +248,78 @@ export default {
             }
         },
         report_scores() {
-            console.log("reporting scores")
+            console.log(this.score_inputs)
+            if(this.score_inputs.court1 !== "") {
+                console.log("court1 input", this.score_inputs.court1)
+                var side1 = []
+                for (let i=0;i<this.court_1_side_1.length;i++){
+                    side1.push(this.court_1_side_1[i].name)
+                }
+                var side2 = []
+                for (let i=0;i<this.court_1_side_1.length;i++){
+                    side2.push(this.court_1_side_2[i].name)
+                }
+                this.scores.unshift({
+                    side1: side1,
+                    side2: side2,
+                    result: this.score_inputs.court1
+                })
+            }
+            if(this.score_inputs.court2 !== "") {
+                console.log("court2 input")
+                var side1 = []
+                for (let i=0;i<this.court_2_side_1.length;i++){
+                    side1.push(this.court_2_side_1[i].name)
+                }
+                var side2 = []
+                for (let i=0;i<this.court_2_side_1.length;i++){
+                    side2.push(this.court_2_side_2[i].name)
+                }
+                this.scores.unshift({
+                    side1: side1,
+                    side2: side2,
+                    result: this.score_inputs.court2
+                })
+            }
+            if(this.score_inputs.court3 !== "") {
+                console.log("court3 input")
+                var side1 = []
+                for (let i=0;i<this.court_3_side_1.length;i++){
+                    side1.push(this.court_3_side_1[i].name)
+                }
+                var side2 = []
+                for (let i=0;i<this.court_3_side_1.length;i++){
+                    side2.push(this.court_3_side_2[i].name)
+                }
+                this.scores.unshift({
+                    side1: side1,
+                    side2: side2,
+                    result: this.score_inputs.court3
+                })
+            }
+            if(this.score_inputs.court4 !== "") {
+                console.log("court4 input")
+                var side1 = []
+                for (let i=0;i<this.court_4_side_1.length;i++){
+                    side1.push(this.court_4_side_1[i].name)
+                }
+                var side2 = []
+                for (let i=0;i<this.court_4_side_1.length;i++){
+                    side2.push(this.court_4_side_2[i].name)
+                }
+                this.scores.unshift({
+                    side1: side1,
+                    side2: side2,
+                    result: this.score_inputs.court4
+                })
+            }
         }
     }
 }
 </script>
 <style scoped>
   .drop-zone {
-    background-color: #eee;
+    background-color: #b5edb2;
     margin-bottom: 10px;
     padding: 30px;
   }

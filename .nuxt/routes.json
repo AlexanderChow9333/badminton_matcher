@@ -3,14 +3,12 @@
     "name": "doubles",
     "path": "/doubles",
     "component": "/Users/alexander/Documents/GitHub/badminton_matcher/pages/doubles.vue",
-    "chunkName": "pages/doubles",
-    "_name": "_1d243e2d"
+    "chunkName": "pages/doubles"
   },
   {
     "name": "index",
     "path": "/",
     "component": "/Users/alexander/Documents/GitHub/badminton_matcher/pages/index.vue",
-    "chunkName": "pages/index",
-    "_name": "_748f38fd"
+    "chunkName": "pages/index"
   }
 ]
