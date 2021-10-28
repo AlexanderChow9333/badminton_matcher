@@ -6,21 +6,22 @@
             <b-input v-model="players_str"></b-input>
             <br>
             <b-button style="margin:10px;" variant='primary' @click="update_players">Update Players List</b-button>
-            <b-button style="margin:10px;" v-b-modal.scores_modal>Report Scores</b-button>
-                <b-modal id="scores_modal" title="Report the scores!">
-                    <div v-if="court_1_side_1.length > 0">
+            <b-button v-if="players.filter(player => player.placement.court !== 0).length > 1" style="margin:10px;" v-b-modal.scores_modal>Report Scores</b-button>
+            <b-button v-else disabled=true>Report Scores</b-button>
+                <b-modal id="scores_modal" title="Report the scores!" ok-disabled=true>
+                    <div v-if="court_1_side_1.length > 0 && court_1_side_2.length > 0">
                         <h4>Court 1</h4>
                         <b-input v-model="score_inputs.court1"></b-input>
                     </div>
-                    <div v-if="court_2_side_1.length > 0">
+                    <div v-if="court_2_side_1.length > 0 && court_2_side_2.length > 0">
                         <h4>Court 2</h4>
                         <b-input v-model="score_inputs.court2"></b-input>
                     </div>
-                    <div v-if="court_3_side_1.length > 0">
+                    <div v-if="court_3_side_1.length > 0 && court_3_side_2.length > 0">
                         <h4>Court 3</h4>
                         <b-input v-model="score_inputs.court3"></b-input>
                     </div>
-                    <div v-if="court_4_side_1.length > 0">
+                    <div v-if="court_4_side_1.length > 0 && court_4_side_2.length > 0">
                         <h4>Court 4</h4>
                         <b-input v-model="score_inputs.court4"></b-input>
                     </div>
